@@ -9,17 +9,77 @@
 <body>
   <div class="container">
     <h1>Book Your Office Day</h1>
+    <!-- Responsive Image -->
+  <!-- <img src="../images/floor-plan.png" alt="Classroom Image" class="responsive-img" /> -->
     <form id="bookingForm">
       <input type="text" id="name" placeholder="Your Name" required />
       <input type="email" id="email" placeholder="Your Email" required />
       <input type="date" id="date" required />
+        <!-- New Dropdown -->
+    <label for="room">Select Room:</label>
+    <select id="room" name="room" required>
+      <option value="">-- Choose a Room --</option>
+      <option>D40</option>
+      <option>D41</option>
+      <option>D42</option>
+      <option>D46</option>
+      <option>F52</option>
+      <option>F53</option>
+      <option>F54</option>
+      <option>F55</option>
+      <option>F56</option>
+      <option>F57</option>
+      <option>F58</option>
+      <option>G64</option>
+      <option>G65</option>
+      <option>G66</option>
+      <option>G67</option>
+      <option>G68</option>
+      <option>G69</option>
+      <option>G70</option>
+      <option>H79</option>
+      <option>H80</option>
+      <option>H81</option>
+      <option>H82</option>
+      <option>H83</option>
+      <option>H84</option>
+      <option>H85</option>
+      <option>F59</option>
+      <option>G71</option>
+      <option>F60</option>
+      <option>F61</option>
+      <option>F62</option>
+      <option>F63</option>
+      <option>G72</option>
+      <option>G73</option>
+      <option>G74</option>
+      <option>G75</option>
+      <option>H87</option>
+      <option>H88</option>
+      <option>H89</option>
+      <option>H90</option>
+      <option>G76</option>
+      <option>G77</option>
+      <option>G78</option>
+      <option>H91</option>
+      <option>H92</option>
+      <option>H93</option>
+    </select><br><br>
       <button type="submit">Book</button>
     </form>
 
-    <p id="seatsLeft">Seats left: 44</p>
+    <p id="seatsLeft">Seats left: 43</p>
     <p id="message" style="color:red;"></p>
   </div>
-
+<!-- 
+ ardaghgroup validations 
+ disable weekends
+ blocked on zscaler
+ seat book 
+ drop down selected seated 
+ disappear selected seats
+ seating plan floor on landing page
+ -->
 <script>
   const form = document.getElementById("bookingForm");
   const dateInput = document.getElementById("date");
@@ -35,7 +95,7 @@
   async function updateSeats() {
     const selectedDate = dateInput.value;
     if (!selectedDate) {
-      seatsText.textContent = "Seats left: 44"; // Default if no date selected
+      seatsText.textContent = "Seats left: 43"; // Default if no date selected
       return;
     }
     try {

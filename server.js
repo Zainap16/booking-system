@@ -19,7 +19,7 @@ app.use(bodyParser.json());
 app.use(express.static("public"));
 
 // ✅ Constants
-const MAX_SEATS = 44;
+const MAX_SEATS = 43;
 
 // ✅ Email setup
 const transporter = nodemailer.createTransport({

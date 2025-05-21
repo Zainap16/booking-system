@@ -1,5 +1,5 @@
-const BASE_URL = "https://booking-system-yeb8.onrender.com";
-// const BASE_URL = "http://localhost:3000";
+// const BASE_URL = "https://booking-system-yeb8.onrender.com";
+const BASE_URL = "http://localhost:3000";
 
 const form = document.getElementById("bookingForm");
 const dateInput = document.getElementById("date");
@@ -11,7 +11,7 @@ async function updateSeatsAndCheck() {
   const email = document.getElementById("email").value.trim();
 
   if (!date) {
-    seatsText.innerText = "Seats left: 44";
+    seatsText.innerText = "Seats left: 43";
     messageDiv.textContent = "";
     return;
   }
