@@ -50,6 +50,12 @@ app.post("/book", async (req, res) => {
       return res.status(400).send(`Room ${room} is already booked for ${date}.`);
     }
 
+// 🚫 NEW: Prevent same user from booking multiple rooms on the same day
+const userHasBookingOnDate = await Booking.findOne({ email, date });
+if (userHasBookingOnDate) {
+  return res.status(400).send("You have already booked a seat for this date.");
+}
+
     // 2. Limit total bookings per day
     const bookingsOnDate = await Booking.countDocuments({ date });
     if (bookingsOnDate >= MAX_SEATS) {
