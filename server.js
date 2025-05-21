@@ -29,7 +29,21 @@ const transporter = nodemailer.createTransport({
     pass: process.env.EMAIL_PASS
   }
 });
+/* 
+whitlist valid emails
+// Example whitelist (load from DB or env in real app)
+const allowedEmployees = [
+  "alice@ardaghgroup.com",
+  "bob@ardaghgroup.com",
+  "carol@ardaghgroup.com"
+];
 
+// Inside your booking POST endpoint, after you get `email` from req.body:
+if (!allowedEmployees.includes(email.toLowerCase())) {
+  return res.status(403).send("Booking allowed only for Ardagh Group employees.");
+}
+
+*/
 // ✅ Booking endpoint
 app.post("/book", async (req, res) => {
   const { email, name, date, room } = req.body;
