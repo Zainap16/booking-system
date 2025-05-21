@@ -10,7 +10,7 @@
   <div class="container">
     <h1>Book Your Office Day</h1>
     <!-- Responsive Image -->
-  <!-- <img src="../images/floor-plan.png" alt="Classroom Image" class="responsive-img" /> -->
+  <img src="../images/floor-plan.png" alt="Classroom Image" class="responsive-img" />
     <form id="bookingForm">
       <input type="text" id="name" placeholder="Your Name" required />
       <input type="email" id="email" placeholder="Your Email" required />
@@ -85,6 +85,8 @@
   const dateInput = document.getElementById("date");
   const seatsText = document.getElementById("seatsLeft");
   const messageDiv = document.getElementById("message");
+const room = document.getElementById("room").value.trim();
+
 
   // Set minimum date to tomorrow (1 day in advance)
   const today = new Date();
@@ -149,7 +151,7 @@
       const res = await fetch("https://booking-system-yeb8.onrender.com/book", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name, email, date: selectedDate })
+        body: JSON.stringify({ name, email, date: selectedDate,room })
       });
 
       if (res.ok) {
