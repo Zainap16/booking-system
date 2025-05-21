@@ -96,11 +96,20 @@ dateInput.value = tomorrowStr;  // <-- Set default date to tomorrow
   }
 
   dateInput.addEventListener("change", () => {
+  const selectedDate = new Date(dateInput.value);
+  const day = selectedDate.getDay();
+
+  if (day === 0 || day === 6) {
+    messageDiv.style.color = "red";
+    messageDiv.textContent = "Weekends (Saturday and Sunday) cannot be selected. Please choose a weekday.";
+    dateInput.value = "";
+  } else {
     messageDiv.textContent = "";
     updateSeats();
     loadAvailableRooms(dateInput.value);
-  });
-
+  }
+});
+  
   window.addEventListener("load", () => {
     if (dateInput.value) {
       updateSeats();
