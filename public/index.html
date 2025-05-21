@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Office Booking</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="container">
+
+     <h1>Book Your Office Day</h1>
+  <form id="bookingForm">
+    <input type="text" id="name" placeholder="Your Name" required>
+    <input type="email" id="email" placeholder="Your Email" required>
+    <input type="date" id="date" required>
+    <button type="submit">Book</button>
+    </form>
+    <p id="seatsLeft">Seats left: 44</p>
+<p id="message" style="color:red;"></p>
+  </div>
+ 
+
+  
+  <!-- <script src="../script.js"></script> -->
+<script>
+  const form = document.getElementById("bookingForm");
+  const dateInput = document.getElementById("date");
+  const seatsText = document.getElementById("seatsLeft");
+  const messageDiv = document.getElementById("message");
+
+  // Set minimum date to tomorrow (1 day in advance)
+  const today = new Date();
+  today.setDate(today.getDate() + 1);
+  dateInput.min = today.toISOString().split("T")[0];
+
+  // Function to fetch and update seats left for selected date
+  async function updateSeats() {
+    if (!dateInput.value) {
+      seatsText.textContent = "Seats left: 44"; // Default if no date selected
+      return;
+    }
+    try {
+      const res = await fetch(`http://localhost:3000/availability/${dateInput.value}`);
+      if (res.ok) {
+        const data = await res.json();
+        seatsText.textContent = `Seats left: ${data.seatsLeft}`;
+      } else {
+        seatsText.textContent = "Seats left: N/A";
+      }
+    } catch {
+      seatsText.textContent = "Seats left: Error";
+    }
+  }
+
+  // Update seats left when date changes
+  dateInput.addEventListener("change", () => {
+    messageDiv.textContent = ""; // Clear any previous messages
+    updateSeats();
+  });
+
+  // Update seats left on page load (in case date is prefilled)
+  window.addEventListener("load", updateSeats);
+
+  // Handle form submission
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+
+    const name = document.getElementById("name").value.trim();
+    const email = document.getElementById("email").value.trim();
+    const date = dateInput.value;
+
+    // Basic validation
+    if (!date) {
+      messageDiv.style.color = "red";
+      messageDiv.textContent = "Please select a date.";
+      return;
+    }
+    if (!name) {
+      messageDiv.style.color = "red";
+      messageDiv.textContent = "Please enter your name.";
+      return;
+    }
+    if (!email) {
+      messageDiv.style.color = "red";
+      messageDiv.textContent = "Please enter your email.";
+      return;
+    }
+
+    try {
+      const res = await fetch("http://localhost:3000/book", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name, email, date })
+      });
+
+      if (res.ok) {
+        messageDiv.style.color = "green";
+        messageDiv.textContent = "Booking successful! Confirmation email sent.";
+        updateSeats(); // Refresh seats left
+        form.reset();
+        dateInput.min = today.toISOString().split("T")[0]; // reset min date again
+      } else {
+        const errorText = await res.text();
+        messageDiv.style.color = "red";
+        messageDiv.textContent = "Error: " + errorText;
+      }
+    } catch (error) {
+      messageDiv.style.color = "red";
+      messageDiv.textContent = "Network error: " + error.message;
+    }
+  })
+</script>
+
+
+</body>
+</html>
