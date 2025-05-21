@@ -33,11 +33,19 @@ const transporter = nodemailer.createTransport({
 // ✅ Booking endpoint
 app.post("/book", async (req, res) => {
   const { email, name, date, room } = req.body;
+
+  //only Ardaghgroup.com emails
+ if (!email.toLowerCase().endsWith("@ardaghgroup.com")) {
+  return res.status(400).send("Only @ardaghgroup.com email addresses are allowed.");
+}
+
   const bookingDate = new Date(date);
   const today = new Date();
 
   today.setHours(0, 0, 0, 0);
   bookingDate.setHours(0, 0, 0, 0);
+
+
 
   if (bookingDate <= today) {
     return res.status(400).send("You can only book a day in advance.");
