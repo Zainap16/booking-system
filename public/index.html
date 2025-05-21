@@ -1,3 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Office Booking</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="container">
+    <h1>Book Your Office Day</h1>
+    <form id="bookingForm">
+      <input type="text" id="name" placeholder="Your Name" required />
+      <input type="email" id="email" placeholder="Your Email" required />
+      <input type="date" id="date" required />
+      <button type="submit">Book</button>
+    </form>
+
+    <p id="seatsLeft">Seats left: 44</p>
+    <p id="message" style="color:red;"></p>
+  </div>
+
 <script>
   const form = document.getElementById("bookingForm");
   const dateInput = document.getElementById("date");
@@ -87,3 +109,5 @@
     }
   });
 </script>
+</body>
+</html>
