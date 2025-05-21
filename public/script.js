@@ -90,3 +90,21 @@ form.addEventListener("submit", async (e) => {
     alert("Network error. Please try again later.");
   }
 });
+
+//load aviavle rooms
+
+async function loadAvailableRooms(date) {
+  const response = await fetch(`/available-rooms/${date}`);
+  const data = await response.json();
+  
+  const dropdown = document.getElementById("room");
+  dropdown.innerHTML = ""; // clear previous options
+
+  data.availableRooms.forEach(room => {
+    const option = document.createElement("option");
+    option.value = room;
+    option.textContent = room;
+    dropdown.appendChild(option);
+  });
+}
+
