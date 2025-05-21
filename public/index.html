@@ -39,7 +39,7 @@
       return;
     }
     try {
-      const res = await fetch(`http://localhost:3000/availability/${dateInput.value}`);
+      const res = await fetch(`https://booking-system-yeb8.onrender.com/availability/${date}`);
       if (res.ok) {
         const data = await res.json();
         seatsText.textContent = `Seats left: ${data.seatsLeft}`;
@@ -86,7 +86,7 @@
     }
 
     try {
-      const res = await fetch("http://localhost:3000/book", {
+      const res = await fetch("https://booking-system-yeb8.onrender.com/book", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ name, email, date })
