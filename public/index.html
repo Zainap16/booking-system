@@ -1,26 +1,3 @@
-<!DOCTYPE html>
-<html>
-<head>
-  <title>Office Booking</title>
-  <link rel="stylesheet" href="style.css">
-</head>
-<body>
-  <div class="container">
-
-     <h1>Book Your Office Day</h1>
-  <form id="bookingForm">
-    <input type="text" id="name" placeholder="Your Name" required>
-    <input type="email" id="email" placeholder="Your Email" required>
-    <input type="date" id="date" required>
-    <button type="submit">Book</button>
-    </form>
-    <p id="seatsLeft">Seats left: 44</p>
-<p id="message" style="color:red;"></p>
-  </div>
- 
-
-  
-  <!-- <script src="../script.js"></script> -->
 <script>
   const form = document.getElementById("bookingForm");
   const dateInput = document.getElementById("date");
@@ -34,12 +11,13 @@
 
   // Function to fetch and update seats left for selected date
   async function updateSeats() {
-    if (!dateInput.value) {
+    const selectedDate = dateInput.value;
+    if (!selectedDate) {
       seatsText.textContent = "Seats left: 44"; // Default if no date selected
       return;
     }
     try {
-      const res = await fetch(`https://booking-system-yeb8.onrender.com/availability/${date}`);
+      const res = await fetch(`https://booking-system-yeb8.onrender.com/availability/${selectedDate}`);
       if (res.ok) {
         const data = await res.json();
         seatsText.textContent = `Seats left: ${data.seatsLeft}`;
@@ -66,10 +44,10 @@
 
     const name = document.getElementById("name").value.trim();
     const email = document.getElementById("email").value.trim();
-    const date = dateInput.value;
+    const selectedDate = dateInput.value;
 
     // Basic validation
-    if (!date) {
+    if (!selectedDate) {
       messageDiv.style.color = "red";
       messageDiv.textContent = "Please select a date.";
       return;
@@ -89,7 +67,7 @@
       const res = await fetch("https://booking-system-yeb8.onrender.com/book", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name, email, date })
+        body: JSON.stringify({ name, email, date: selectedDate })
       });
 
       if (res.ok) {
@@ -107,9 +85,5 @@
       messageDiv.style.color = "red";
       messageDiv.textContent = "Network error: " + error.message;
     }
-  })
+  });
 </script>
-
-
-</body>
-</html>
