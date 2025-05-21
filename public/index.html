@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Office Booking</title>
   <link rel="stylesheet" href="style.css" />
+
 </head>
 <body>
   <div class="container">
@@ -51,6 +52,11 @@
   today.setDate(today.getDate() + 1);
   dateInput.min = today.toISOString().split("T")[0];
 
+  //new line for tm code thing
+  dateInput.value = today.toISOString().split("T")[0];
+const tomorrowStr = today.toISOString().split("T")[0];
+dateInput.min = tomorrowStr;
+dateInput.value = tomorrowStr;  // <-- Set default date to tomorrow
   // Fetch and update available seats and rooms
   async function updateSeats() {
     const selectedDate = dateInput.value;
@@ -156,6 +162,9 @@ document.addEventListener("keydown", (e) => {
   }
 });
 
+
+
 </script>
+
 </body>
 </html>
