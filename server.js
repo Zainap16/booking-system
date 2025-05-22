@@ -175,7 +175,43 @@ app.delete("/cancel", async (req, res) => {
   }
 
   try {
-    // Delete booking document matching all three fields
+    // Parse booking date and get current datetime
+    const bookingDate = new Date(date);
+    bookingDate.setHours(0, 0, 0, 0);
+
+    const now = new Date();
+
+    // Set today date with zeroed time for comparison
+    const today = new Date(now);
+    today.setHours(0, 0, 0, 0);
+
+    // Set tomorrow date (today + 1 day)
+    const tomorrow = new Date(today);
+    tomorrow.setDate(tomorrow.getDate() + 1);
+
+    // Rule check:
+
+    if (bookingDate.getTime() === today.getTime()) {
+      // Booking is today - cannot cancel on the day
+      return res.status(400).send("Cancellation not allowed on the booking day.");
+    }
+
+    if (bookingDate.getTime() === tomorrow.getTime()) {
+      // Booking is tomorrow - cancellation allowed only before 12 PM today
+      const noonToday = new Date(today);
+      noonToday.setHours(12, 0, 0, 0);
+
+      if (now >= noonToday) {
+        return res.status(400).send("Cancellation not allowed after 12 PM the day before the booking.");
+      }
+    }
+
+    if (bookingDate < today) {
+      // Booking date in the past (shouldn't normally happen but just in case)
+      return res.status(400).send("Cannot cancel a booking in the past.");
+    }
+
+    // Proceed to delete booking
     const result = await Booking.findOneAndDelete({
       email: email.toLowerCase(),
       date,
@@ -186,15 +222,13 @@ app.delete("/cancel", async (req, res) => {
       return res.status(404).send("Booking not found");
     }
 
-    // Optionally: If you also have a separate "Room" collection and want to remove the room from there, do it here
-    // await Room.deleteOne({ room: room.toUpperCase(), date });
-
     res.status(200).send("Booking cancelled successfully");
   } catch (error) {
     console.error("Error cancelling booking:", error);
     res.status(500).send("Internal server error");
   }
 });
+
 
 
 //cancel date

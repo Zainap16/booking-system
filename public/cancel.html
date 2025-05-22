@@ -34,6 +34,23 @@ const cancelDate = document.getElementById("cancelDate");
 const cancelRoom = document.getElementById("cancelRoom");
 const cancelMessage = document.getElementById("cancelMessage");
 
+// Helper function to format Date to yyyy-mm-dd for input[type=date]
+function formatDateToInput(date) {
+  return date.toISOString().split("T")[0];
+}
+
+function setMinDateForCancel() {
+  const now = new Date();
+
+  // Tomorrow’s date (minimum selectable)
+  const tomorrow = new Date(now);
+  tomorrow.setDate(tomorrow.getDate() + 1);
+
+  cancelDate.min = formatDateToInput(tomorrow);
+  cancelDate.value = formatDateToInput(tomorrow);
+}
+
+setMinDateForCancel();
 
 // Function to fetch booked rooms for email + date
 async function fetchBookedRooms(email, date) {
@@ -115,8 +132,6 @@ cancelForm.addEventListener("submit", async (e) => {
     cancelMessage.textContent = "Network error: " + error.message;
   }
 });
-
-
   </script>
 </body>
 </html>
