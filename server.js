@@ -233,8 +233,26 @@ app.delete("/cancel", async (req, res) => {
 
 
 //cancel date
+// app.get("/booked-rooms", async (req, res) => {
+//   const { email, date } = req.query;
+
+//   if (!email || !date) {
+//     return res.status(400).send("Missing email or date");
+//   }
+
+//   try {
+//     const bookings = await Booking.find({ email: email.toLowerCase(), date });
+//     const bookedRooms = bookings.map(b => b.room);
+//     res.json({ bookedRooms });
+//   } catch (error) {
+//     console.error("Error fetching booked seats:", error);
+//     res.status(500).send("Internal server error.");
+//   }
+// });
 app.get("/booked-rooms", async (req, res) => {
   const { email, date } = req.query;
+
+  console.log("Incoming /booked-rooms request:", { email, date });
 
   if (!email || !date) {
     return res.status(400).send("Missing email or date");
@@ -242,13 +260,24 @@ app.get("/booked-rooms", async (req, res) => {
 
   try {
     const bookings = await Booking.find({ email: email.toLowerCase(), date });
-    const bookedRooms = bookings.map(b => b.room);
-    res.json({ bookedRooms });
-  } catch (error) {
-    console.error("Error fetching booked seats:", error);
-    res.status(500).send("Internal server error.");
+    console.log("Found bookings:", bookings);
+
+    const rooms = bookings.map(b => b.room);
+    res.json({ bookedRooms: rooms });
+  } catch (err) {
+    console.error("Error fetching booked rooms:", err);
+    res.status(500).send("Internal server error");
   }
 });
+
+const response = await fetch(`https://booking-system-yeb8.onrender.com/booked-rooms?email=${encodeURIComponent(email)}&date=${encodeURIComponent(date)}`);
+
+if (!response.ok) {
+  const text = await response.text(); // try text first
+  throw new Error("Server error: " + text);
+}
+
+const data = await response.json();
 
 
 
