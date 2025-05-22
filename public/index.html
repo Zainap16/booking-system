@@ -8,19 +8,19 @@
   <link rel="stylesheet" href="./style.css" />
   <link rel="icon" type="image/png" href="./images/CoE-Logo.jpg">
 
-
-
 </head>
 <body>
+  
    <div class="overlay-container">
   <div class="container">
+    <button id="toggleTheme" style="position:absolute; top:10px; right:10px;">🌙 Dark Mode</button>
+
     <h1>Book Your Office Day</h1>
 
     <!-- Responsive Image -->
-    <!-- <img src="./images/floor-plan.png" alt="Classroom Image" class="responsive-img" /> -->
+
      <button id="viewImageBtn" type="button">View Fullscreen Map</button>
 
-<!-- <div id="fullscreenOverlay" class="fullscreen-overlay" style="display:none;"> -->
   <div id="fullscreenOverlay" class="fullscreen-overlay" role="dialog" aria-modal="true" style="display:none;">
 
   <span id="closeBtn">&times;</span>
@@ -186,6 +186,21 @@ document.addEventListener("keydown", (e) => {
   }
 });
 
+//dark mode script
+const toggleBtn = document.getElementById("toggleTheme");
+const isDark = localStorage.getItem("theme") === "dark";
+
+if (isDark) {
+  document.body.classList.add("dark-mode");
+  toggleBtn.textContent = "☀️ Light Mode";
+}
+
+toggleBtn.addEventListener("click", () => {
+  document.body.classList.toggle("dark-mode");
+  const isDarkMode = document.body.classList.contains("dark-mode");
+  toggleBtn.textContent = isDarkMode ? "☀️ Light Mode" : "🌙 Dark Mode";
+  localStorage.setItem("theme", isDarkMode ? "dark" : "light");
+});
 
 
 </script>

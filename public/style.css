@@ -4,7 +4,7 @@
     }
     body {
       font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-      /* background: #e1dede; */
+      /* background: #f4f2f2; */
       margin: 0;
       padding: 0;
       display: flex;
@@ -12,13 +12,8 @@
       align-items: flex-start;
       min-height: 100vh;
       padding: 2rem;
-
-       /* 🎨 Background image */
-  background-image: url('./images/CoE-Logo.jpg'); /* Replace with your actual path */
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-  background-attachment: fixed; /* optional: makes the image stay in place while scrolling */
+      background-color: var(--bg-color);
+  color: var(--text-color);
     }
 
     /* Overlay container */
@@ -33,7 +28,7 @@
   z-index: -1;
 }
     .container {
-      background: #ffffff;
+      background: #fff6f6;
       max-width: 420px;
       width: 100%;
       padding: 2rem;
@@ -42,12 +37,14 @@
       display: flex;
       flex-direction: column;
       gap: 1.5rem;
+       background-color: var(--container-bg);
+  color: var(--text-color);
     }
 
     h1 {
       margin: 0;
       font-weight: 700;
-      color: #333;
+      color: var(--text-color);
       text-align: center;
       letter-spacing: 1.5px;
     }
@@ -73,13 +70,13 @@
     input[type="text"]:focus,
     input[type="email"]:focus,
     input[type="date"]:focus {
-      border-color: #4a90e2;
+     color: var(--text-color);
       outline: none;
       box-shadow: 0 0 5px rgba(74, 144, 226, 0.5);
     }
 
     input[type="date"] {
-  color: #333;         /* dark text */
+   color: var(--text-color);  /* instead of #333 */
   font-size: 1rem;
   /* other styling */
 }
@@ -187,12 +184,62 @@ select#room option {
 }
 
   
-<<<<<<< HEAD
+
 /* smooth transition */
 body, .container, #toggleTheme {
   transition: background-color 0.3s, color 0.3s;
 }
-=======
->>>>>>> parent of 60372b8 (dark mode enabled)
+
+:root {
+  --bg-color: #e1dede;
+  --container-bg: #ffffff;
+  --text-color: #333;
+  --input-bg: #fff;
+  --input-border: #ccc;
+  --select-bg: #f8f8f8;
+  --select-text: #333;
+  --button-bg: #4a90e2;
+  --button-hover: #357abd;
+  --button-disabled: #a5c2f3;
+}
+
+body.dark-mode {
+  --bg-color: #121212;
+  --container-bg: #1e1e1e;
+  --text-color: #f0f0f0;
+  --input-bg: #2a2a2a;
+  --input-border: #555;
+  --select-bg: #2a2a2a;
+  --select-text: #f0f0f0;
+  --button-bg: #4a90e2;
+  --button-hover: #357abd;
+  --button-disabled: #555;
+}
+
+
+
+
+input,
+select {
+  background-color: var(--input-bg);
+  color: var(--text-color);
+  border: 1.8px solid var(--input-border);
+}
+
+select {
+  background-color: var(--select-bg);
+  color: var(--select-text);
+}
+
+button {
+  background-color: var(--button-bg);
+  color: white;
+}
+button:hover {
+  background-color: var(--button-hover);
+}
+button:disabled {
+  background-color: var(--button-disabled);
+}
 
 
