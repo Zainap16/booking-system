@@ -20,7 +20,9 @@
     <!-- <img src="./images/floor-plan.png" alt="Classroom Image" class="responsive-img" /> -->
      <button id="viewImageBtn" type="button">View Fullscreen Map</button>
 
-<div id="fullscreenOverlay" class="fullscreen-overlay" style="display:none;">
+<!-- <div id="fullscreenOverlay" class="fullscreen-overlay" style="display:none;"> -->
+  <div id="fullscreenOverlay" class="fullscreen-overlay" role="dialog" aria-modal="true" style="display:none;">
+
   <span id="closeBtn">&times;</span>
   <img src="./images/floor-plan.png" alt="Full Map" class="fullscreen-image" />
 </div>
@@ -82,7 +84,8 @@ dateInput.value = tomorrowStr;  // <-- Set default date to tomorrow
   async function updateSeats() {
     const selectedDate = dateInput.value;
     if (!selectedDate) {
-      seatsText.textContent = "Seats left: 43";
+      seatsText.textContent = "Please select a date.";
+
       return;
     }
     try {
@@ -123,7 +126,7 @@ dateInput.value = tomorrowStr;  // <-- Set default date to tomorrow
   if (day === 0 || day === 6) {
     messageDiv.style.color = "red";
     messageDiv.textContent = "Weekends (Saturday and Sunday) cannot be selected. Please choose a weekday.";
-    dateInput.value = "";
+    dateInput.value =tomorrowStr;
   } else {
     messageDiv.textContent = "";
     updateSeats();
