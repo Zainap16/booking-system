@@ -172,35 +172,32 @@ app.delete("/cancel", async (req, res) => {
   if (!email || !date) return res.status(400).send("Missing data.");
 
   try {
-    const result = await bookingsCollection.deleteOne({ email, date });
-    if (result.deletedCount === 0) {
+    // 👉 Find the booking first to get room info
+    const booking = await Booking.findOne({ email, date });
+    if (!booking) {
       return res.status(404).send("Booking not found.");
     }
 
-    // Send cancellation email
-    const transporter = nodemailer.createTransport({
-      service: "Gmail", // Or use your org's SMTP
-      auth: {
-        user: "yourcompanyemail@ardaghgroup.com", // <-- Replace with your actual sender email
-        pass: "your-app-password-or-email-password" // <-- NEVER hardcode this in production
-      }
-    });
+    // 👉 Now delete the booking
+    await Booking.deleteOne({ email, date });
 
+    // ✅ Send email with room included
     const mailOptions = {
-      from: "yourcompanyemail@ardaghgroup.com",
+      from: process.env.EMAIL_USER,
       to: email,
       subject: "Booking Cancelled",
-      text: `Hi,\n\nYour booking for ${date} has been cancelled.\n\nRegards,\nOffice Booking Team`
+      text: `Hi ${booking.name},\n\nYour booking for room ${booking.room} on ${date} has been cancelled.\n\nRegards,\nOffice Booking Team`
     };
 
     await transporter.sendMail(mailOptions);
 
     res.send("Booking cancelled and email sent.");
   } catch (err) {
-    console.error(err);
+    console.error("Cancellation error:", err);
     res.status(500).send("Server error.");
   }
 });
+
 
 
 // ✅ Start the server
