@@ -10,11 +10,13 @@
   <div class="container">
     <h1>Cancel Your Booking</h1>
     
-    <form id="cancelForm">
-      <input type="email" id="cancelEmail" placeholder="Your Email" required />
-      <input type="date" id="cancelDate" required />
-      <button type="submit">Cancel Booking</button>
-    </form>
+   <form id="cancelForm">
+  <input type="email" id="cancelEmail" placeholder="Your Email" required />
+  <input type="date" id="cancelDate" required />
+  <input type="text" id="cancelRoom" placeholder="Room (e.g. F55)" required />
+  <button type="submit">Cancel Booking</button>
+</form>
+
 
     <p id="cancelMessage" style="color:red;"></p>
 
@@ -23,33 +25,33 @@
   </div>
 
   <script>
-    const cancelForm = document.getElementById("cancelForm");
-    const cancelEmail = document.getElementById("cancelEmail");
-    const cancelDate = document.getElementById("cancelDate");
-    const cancelMessage = document.getElementById("cancelMessage");
+   const cancelForm = document.getElementById("cancelForm");
+const cancelEmail = document.getElementById("cancelEmail");
+const cancelDate = document.getElementById("cancelDate");
+const cancelRoom = document.getElementById("cancelRoom");
+const cancelMessage = document.getElementById("cancelMessage");
 
-    cancelForm.addEventListener("submit", async (e) => {
+cancelForm.addEventListener("submit", async (e) => {
   e.preventDefault();
 
   const email = cancelEmail.value.trim();
   const date = cancelDate.value;
+  const room = cancelRoom.value.trim().toUpperCase();
 
-  if (!email || !date) {
+  if (!email || !date || !room) {
     cancelMessage.style.color = "red";
-    cancelMessage.textContent = "Please enter both email and date.";
+    cancelMessage.textContent = "Please fill in all fields.";
     return;
   }
 
-  const confirmCancel = confirm(`Are you sure you want to cancel your booking on ${date}?`);
-  if (!confirmCancel) {
-    return;
-  }
+  const confirmCancel = confirm(`Cancel booking for ${room} on ${date}?`);
+  if (!confirmCancel) return;
 
   try {
     const res = await fetch("https://booking-system-yeb8.onrender.com/cancel", {
       method: "DELETE",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email, date })
+      body: JSON.stringify({ email, date, room })
     });
 
     if (res.ok) {
@@ -65,6 +67,7 @@
     cancelMessage.textContent = "Network error: " + error.message;
   }
 });
+
 
   </script>
 </body>

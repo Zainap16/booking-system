@@ -168,36 +168,35 @@ app.get("/available-rooms/:date", async (req, res) => {
 //CANCEL ENDPOINT
 
 app.delete("/cancel", async (req, res) => {
-  const { email, date } = req.body;
-  if (!email || !date) return res.status(400).send("Missing data.");
+  const { email, date, room } = req.body;
+
+  if (!email || !date || !room) {
+    return res.status(400).send("Missing email, date, or room.");
+  }
 
   try {
-    // 👉 Find the booking first to get room info
-    const booking = await Booking.findOne({ email, date });
-    if (!booking) {
+    const result = await Booking.deleteOne({ email, date, room });
+
+    if (result.deletedCount === 0) {
       return res.status(404).send("Booking not found.");
     }
 
-    // 👉 Now delete the booking
-    await Booking.deleteOne({ email, date });
-
-    // ✅ Send email with room included
+    // Send cancellation email
     const mailOptions = {
       from: process.env.EMAIL_USER,
       to: email,
       subject: "Booking Cancelled",
-      text: `Hi ${booking.name},\n\nYour booking for room ${booking.room} on ${date} has been cancelled.\n\nRegards,\nOffice Booking Team`
+      text: `Hi,\n\nYour booking for ${room} on ${date} has been cancelled.\n\nRegards,\nOffice Booking Team`
     };
 
     await transporter.sendMail(mailOptions);
 
     res.send("Booking cancelled and email sent.");
   } catch (err) {
-    console.error("Cancellation error:", err);
+    console.error(err);
     res.status(500).send("Server error.");
   }
 });
-
 
 
 // ✅ Start the server
