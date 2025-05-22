@@ -14,7 +14,7 @@
   <input type="email" id="cancelEmail" placeholder="Your Email" required />
   <input type="date" id="cancelDate" required />
   <select id="cancelRoom" required>
-  <option value="">Select booked room</option>
+  <option value="">Select booked seat</option>
 </select>
 
   <button type="submit">Cancel Booking</button>
@@ -59,23 +59,23 @@ async function fetchBookedRooms(email, date) {
     return;
   }
 
-  cancelRoom.innerHTML = '<option value="">Loading rooms...</option>';
+  cancelRoom.innerHTML = '<option value="">Loading seats...</option>';
 
   try {
     // Call backend endpoint with email and date as query params
     const response = await fetch(`https://booking-system-yeb8.onrender.com/booked-rooms?email=${encodeURIComponent(email)}&date=${encodeURIComponent(date)}`);
-    if (!response.ok) throw new Error("Failed to fetch rooms");
+    if (!response.ok) throw new Error("Failed to fetch seats");
 
     const data = await response.json();
     const bookedRooms = data.bookedRooms || [];
 
     if (bookedRooms.length === 0) {
-      cancelRoom.innerHTML = '<option value="">No rooms booked with this email on this date</option>';
+      cancelRoom.innerHTML = '<option value="">No seats booked with this email on this date</option>';
       return;
     }
 
     // Populate dropdown
-    cancelRoom.innerHTML = '<option value="">Select your booked room</option>';
+    cancelRoom.innerHTML = '<option value="">Select your booked seat</option>';
     bookedRooms.forEach(room => {
       const option = document.createElement("option");
       option.value = room;
@@ -83,7 +83,7 @@ async function fetchBookedRooms(email, date) {
       cancelRoom.appendChild(option);
     });
   } catch (error) {
-    cancelRoom.innerHTML = '<option value="">Error loading rooms</option>';
+    cancelRoom.innerHTML = '<option value="">Error loading seat</option>';
     console.error(error);
   }
 }

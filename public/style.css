@@ -4,7 +4,7 @@
     }
     body {
       font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-      background: #e1dede;
+      /* background: #e1dede; */
       margin: 0;
       padding: 0;
       display: flex;
@@ -12,9 +12,26 @@
       align-items: flex-start;
       min-height: 100vh;
       padding: 2rem;
+
+       /* 🎨 Background image */
+  background-image: url('./images/CoE-Logo.jpg'); /* Replace with your actual path */
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed; /* optional: makes the image stay in place while scrolling */
     }
 
-    
+    /* Overlay container */
+.overlay-container::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.5); /* darkness here */
+  z-index: -1;
+}
     .container {
       background: #ffffff;
       max-width: 420px;
@@ -138,7 +155,7 @@
 }
 
 /* Style the dropdown */
-select#room {
+select#room, select#cancelRoom {
   width: 100%;
   padding: 10px;
   font-size: 16px;

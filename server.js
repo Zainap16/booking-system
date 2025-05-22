@@ -50,7 +50,7 @@ app.post("/book", async (req, res) => {
 
   //only Ardaghgroup.com emails
  if (!email.toLowerCase().endsWith("@ardaghgroup.com")) {
-  return res.status(400).send("Only @ardaghgroup.com email addresses are allowed.");
+  return res.status(400).send("Only ardaghgroup email addresses are allowed.");
 }
 
   const bookingDate = new Date(date);
@@ -244,7 +244,7 @@ app.get("/booked-rooms", async (req, res) => {
     const bookedRooms = bookings.map(b => b.room);
     res.json({ bookedRooms });
   } catch (error) {
-    console.error("Error fetching booked rooms:", error);
+    console.error("Error fetching booked seats:", error);
     res.status(500).send("Internal server error.");
   }
 });
