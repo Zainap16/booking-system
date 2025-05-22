@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Cancel Booking</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="container">
+    <h1>Cancel Your Booking</h1>
+    
+    <form id="cancelForm">
+      <input type="email" id="cancelEmail" placeholder="Your Email" required />
+      <input type="date" id="cancelDate" required />
+      <button type="submit">Cancel Booking</button>
+    </form>
+
+    <p id="cancelMessage" style="color:red;"></p>
+
+    <br>
+    <button onclick="window.location.href='index.html'">← Back to Booking</button>
+  </div>
+
+  <script>
+    const cancelForm = document.getElementById("cancelForm");
+    const cancelEmail = document.getElementById("cancelEmail");
+    const cancelDate = document.getElementById("cancelDate");
+    const cancelMessage = document.getElementById("cancelMessage");
+
+    cancelForm.addEventListener("submit", async (e) => {
+  e.preventDefault();
+
+  const email = cancelEmail.value.trim();
+  const date = cancelDate.value;
+
+  if (!email || !date) {
+    cancelMessage.style.color = "red";
+    cancelMessage.textContent = "Please enter both email and date.";
+    return;
+  }
+
+  const confirmCancel = confirm(`Are you sure you want to cancel your booking on ${date}?`);
+  if (!confirmCancel) {
+    return;
+  }
+
+  try {
+    const res = await fetch("https://booking-system-yeb8.onrender.com/cancel", {
+      method: "DELETE",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email, date })
+    });
+
+    if (res.ok) {
+      cancelMessage.style.color = "green";
+      cancelMessage.textContent = "Your booking has been cancelled.";
+    } else {
+      const errorText = await res.text();
+      cancelMessage.style.color = "red";
+      cancelMessage.textContent = "Error: " + errorText;
+    }
+  } catch (error) {
+    cancelMessage.style.color = "red";
+    cancelMessage.textContent = "Network error: " + error.message;
+  }
+});
+
+  </script>
+</body>
+</html>

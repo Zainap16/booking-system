@@ -165,6 +165,43 @@ app.get("/available-rooms/:date", async (req, res) => {
   }
 });
 
+//CANCEL ENDPOINT
+
+app.delete("/cancel", async (req, res) => {
+  const { email, date } = req.body;
+  if (!email || !date) return res.status(400).send("Missing data.");
+
+  try {
+    const result = await bookingsCollection.deleteOne({ email, date });
+    if (result.deletedCount === 0) {
+      return res.status(404).send("Booking not found.");
+    }
+
+    // Send cancellation email
+    const transporter = nodemailer.createTransport({
+      service: "Gmail", // Or use your org's SMTP
+      auth: {
+        user: "yourcompanyemail@ardaghgroup.com", // <-- Replace with your actual sender email
+        pass: "your-app-password-or-email-password" // <-- NEVER hardcode this in production
+      }
+    });
+
+    const mailOptions = {
+      from: "yourcompanyemail@ardaghgroup.com",
+      to: email,
+      subject: "Booking Cancelled",
+      text: `Hi,\n\nYour booking for ${date} has been cancelled.\n\nRegards,\nOffice Booking Team`
+    };
+
+    await transporter.sendMail(mailOptions);
+
+    res.send("Booking cancelled and email sent.");
+  } catch (err) {
+    console.error(err);
+    res.status(500).send("Server error.");
+  }
+});
+
 
 // ✅ Start the server
 const PORT = process.env.PORT || 3000;
