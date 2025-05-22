@@ -4,8 +4,12 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Cancel Booking</title>
+<<<<<<< HEAD
   <link rel="stylesheet" href="./style.css" />
   <link rel="icon" type="image/png" href="./images/CoE-Logo.jpg">
+=======
+  <link rel="stylesheet" href="style.css" />
+>>>>>>> parent of 60372b8 (dark mode enabled)
 </head>
 <body>
   <div class="container">
@@ -29,18 +33,6 @@
   </div>
 
   <script>
-     const toggleBtn = document.getElementById("toggleTheme");
-
-  // Load saved theme
-  if (localStorage.getItem("theme") === "dark") {
-    document.body.classList.add("dark-mode");
-  }
-
-  toggleBtn.addEventListener("click", () => {
-    document.body.classList.toggle("dark-mode");
-    const isDark = document.body.classList.contains("dark-mode");
-    localStorage.setItem("theme", isDark ? "dark" : "light");
-  });
    const cancelForm = document.getElementById("cancelForm");
 const cancelEmail = document.getElementById("cancelEmail");
 const cancelDate = document.getElementById("cancelDate");

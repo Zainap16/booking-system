@@ -2,36 +2,38 @@
     * {
       box-sizing: border-box;
     }
-  body {
-  background: var(--bg-color);
-  color: var(--text-color);
-  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-  margin: 0;
-  padding: 2rem;
-  display: flex;
-  justify-content: center;
-  align-items: flex-start;
-  min-height: 100vh;
-}
+    body {
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      /* background: #e1dede; */
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      min-height: 100vh;
+      padding: 2rem;
 
-:root {
-  --bg-color: #ffffff;
-  --text-color: #333333;
-  --container-bg: #ffffff;
-  --button-bg: #4a90e2;
-  --button-hover: #357abd;
-}
+       /* 🎨 Background image */
+  background-image: url('./images/CoE-Logo.jpg'); /* Replace with your actual path */
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed; /* optional: makes the image stay in place while scrolling */
+    }
 
-.dark-mode {
-  --bg-color: #121212;
-  --text-color: #f0f0f0;
-  --container-bg: #1e1e1e;
-  --button-bg: #4a90e2;
-  --button-hover: #2a5d99;
+    /* Overlay container */
+.overlay-container::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.5); /* darkness here */
+  z-index: -1;
 }
     .container {
-     background: var(--container-bg);
-  color: var(--text-color);
+      background: #ffffff;
       max-width: 420px;
       width: 100%;
       padding: 2rem;
@@ -45,7 +47,7 @@
     h1 {
       margin: 0;
       font-weight: 700;
-       color: var(--text-color);
+      color: #333;
       text-align: center;
       letter-spacing: 1.5px;
     }
@@ -86,7 +88,7 @@
       padding: 0.85rem;
       font-size: 1rem;
       font-weight: 600;
-       background: var(--button-bg);
+      background: #4a90e2;
       border: none;
       border-radius: 8px;
       color: white;
@@ -94,7 +96,7 @@
       transition: background-color 0.3s ease;
     }
     button:hover {
-      background: var(--button-hover);
+      background: #357abd;
     }
     button:disabled {
       background: #a5c2f3;
@@ -185,9 +187,12 @@ select#room option {
 }
 
   
+<<<<<<< HEAD
 /* smooth transition */
 body, .container, #toggleTheme {
   transition: background-color 0.3s, color 0.3s;
 }
+=======
+>>>>>>> parent of 60372b8 (dark mode enabled)
 
 
