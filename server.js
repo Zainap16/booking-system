@@ -171,32 +171,50 @@ app.delete("/cancel", async (req, res) => {
   const { email, date, room } = req.body;
 
   if (!email || !date || !room) {
-    return res.status(400).send("Missing email, date, or room.");
+    return res.status(400).send("Missing email, date, or room");
   }
 
   try {
-    const result = await Booking.deleteOne({ email, date, room });
+    // Delete booking document matching all three fields
+    const result = await Booking.findOneAndDelete({
+      email: email.toLowerCase(),
+      date,
+      room: room.toUpperCase()
+    });
 
-    if (result.deletedCount === 0) {
-      return res.status(404).send("Booking not found.");
+    if (!result) {
+      return res.status(404).send("Booking not found");
     }
 
-    // Send cancellation email
-    const mailOptions = {
-      from: process.env.EMAIL_USER,
-      to: email,
-      subject: "Booking Cancelled",
-      text: `Hi,\n\nYour booking for ${room} on ${date} has been cancelled.\n\nRegards,\nOffice Booking Team`
-    };
+    // Optionally: If you also have a separate "Room" collection and want to remove the room from there, do it here
+    // await Room.deleteOne({ room: room.toUpperCase(), date });
 
-    await transporter.sendMail(mailOptions);
-
-    res.send("Booking cancelled and email sent.");
-  } catch (err) {
-    console.error(err);
-    res.status(500).send("Server error.");
+    res.status(200).send("Booking cancelled successfully");
+  } catch (error) {
+    console.error("Error cancelling booking:", error);
+    res.status(500).send("Internal server error");
   }
 });
+
+
+//cancel date
+app.get("/booked-rooms", async (req, res) => {
+  const { email, date } = req.query;
+
+  if (!email || !date) {
+    return res.status(400).send("Missing email or date");
+  }
+
+  try {
+    const bookings = await Booking.find({ email: email.toLowerCase(), date });
+    const bookedRooms = bookings.map(b => b.room);
+    res.json({ bookedRooms });
+  } catch (error) {
+    console.error("Error fetching booked rooms:", error);
+    res.status(500).send("Internal server error.");
+  }
+});
+
 
 
 // ✅ Start the server

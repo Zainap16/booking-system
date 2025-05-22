@@ -13,7 +13,10 @@
    <form id="cancelForm">
   <input type="email" id="cancelEmail" placeholder="Your Email" required />
   <input type="date" id="cancelDate" required />
-  <input type="text" id="cancelRoom" placeholder="Room (e.g. F55)" required />
+  <select id="cancelRoom" required>
+  <option value="">Select booked room</option>
+</select>
+
   <button type="submit">Cancel Booking</button>
 </form>
 
@@ -30,6 +33,51 @@ const cancelEmail = document.getElementById("cancelEmail");
 const cancelDate = document.getElementById("cancelDate");
 const cancelRoom = document.getElementById("cancelRoom");
 const cancelMessage = document.getElementById("cancelMessage");
+
+
+// Function to fetch booked rooms for email + date
+async function fetchBookedRooms(email, date) {
+  if (!email || !date) {
+    cancelRoom.innerHTML = '<option value="">Select your booked room</option>';
+    return;
+  }
+
+  cancelRoom.innerHTML = '<option value="">Loading rooms...</option>';
+
+  try {
+    // Call backend endpoint with email and date as query params
+    const response = await fetch(`https://booking-system-yeb8.onrender.com/booked-rooms?email=${encodeURIComponent(email)}&date=${encodeURIComponent(date)}`);
+    if (!response.ok) throw new Error("Failed to fetch rooms");
+
+    const data = await response.json();
+    const bookedRooms = data.bookedRooms || [];
+
+    if (bookedRooms.length === 0) {
+      cancelRoom.innerHTML = '<option value="">No rooms booked with this email on this date</option>';
+      return;
+    }
+
+    // Populate dropdown
+    cancelRoom.innerHTML = '<option value="">Select your booked room</option>';
+    bookedRooms.forEach(room => {
+      const option = document.createElement("option");
+      option.value = room;
+      option.textContent = room;
+      cancelRoom.appendChild(option);
+    });
+  } catch (error) {
+    cancelRoom.innerHTML = '<option value="">Error loading rooms</option>';
+    console.error(error);
+  }
+}
+
+// Listen for changes on email and date inputs
+cancelEmail.addEventListener("input", () => {
+  fetchBookedRooms(cancelEmail.value.trim(), cancelDate.value);
+});
+cancelDate.addEventListener("change", () => {
+  fetchBookedRooms(cancelEmail.value.trim(), cancelDate.value);
+});
 
 cancelForm.addEventListener("submit", async (e) => {
   e.preventDefault();
