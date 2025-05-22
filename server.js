@@ -103,7 +103,7 @@ if (userHasBookingOnDate) {
     }
 
     // 4. Save booking
-    const newBooking = new Booking({ email, name, date, room });
+    const newBooking = new Booking({ email: email.toLowerCase(), name, date, room });
     await newBooking.save();
 
     // 5. Send confirmation email
@@ -153,7 +153,8 @@ app.get("/available-rooms/:date", async (req, res) => {
   const date = req.params.date;
 
   try {
-    const bookings = await Booking.find({ date });
+    const bookings = await Booking.find({  email
+    : email.toLowerCase(), date });
     const bookedRooms = bookings.map(b => b.room);
 
     const availableRooms = allRooms.filter(room => !bookedRooms.includes(room));

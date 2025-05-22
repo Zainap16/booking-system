@@ -103,10 +103,10 @@ async function fetchBookedRooms(email, date) {
 
 // Listen for changes on email and date inputs
 cancelEmail.addEventListener("input", () => {
-  fetchBookedRooms(cancelEmail.value.trim(), cancelDate.value);
+  fetchBookedRooms(cancelEmail.value.trim().toLowerCase(), cancelDate.value);
 });
 cancelDate.addEventListener("change", () => {
-  fetchBookedRooms(cancelEmail.value.trim(), cancelDate.value);
+  fetchBookedRooms(cancelEmail.value.trim().toLowerCase(), cancelDate.value);
 });
 
 cancelForm.addEventListener("submit", async (e) => {
