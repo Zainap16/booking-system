@@ -143,6 +143,8 @@ app.get("/availability/:date", async (req, res) => {
 
 //Return Available Rooms
 app.get("/available-rooms/:date", async (req, res) => {
+  const bookings = await Booking.find({ date });
+
   const allRooms = [
     "D40", "D41", "D42", "D46",
     "F52", "F53", "F54", "F55", "F56", "F57", "F58", "F59", "F60", "F61", "F62", "F63",

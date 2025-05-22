@@ -190,7 +190,7 @@ body, .container, #toggleTheme {
   transition: background-color 0.3s, color 0.3s;
 }
 
-.loading-overlay {
+/* .loading-overlay {
   position: fixed;
   top: 0;
   left: 0;
@@ -210,7 +210,7 @@ body, .container, #toggleTheme {
   width: 60px;
   height: 60px;
   animation: spin 1s linear infinite;
-}
+} */
 
 @keyframes spin {
   0% { transform: rotate(0deg); }
