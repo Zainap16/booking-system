@@ -51,43 +51,46 @@ document.getElementById("email").addEventListener("input", updateSeatsAndCheck);
 form.addEventListener("submit", async (e) => {
   e.preventDefault();
 
+  // Show loading overlay
+  document.getElementById("loadingOverlay").style.display = "flex";
+
   const name = document.getElementById("name").value.trim();
   const email = document.getElementById("email").value.trim();
-  const date = dateInput.value;
+  const selectedDate = dateInput.value;
+  const room = dropdown.value.trim();
 
-  if (!name || !email || !date) {
-    alert("Please fill in all fields.");
+  if (!selectedDate || !name || !email || !room) {
+    document.getElementById("loadingOverlay").style.display = "none"; // Hide loading
+    messageDiv.style.color = "red";
+    messageDiv.textContent = "Please fill in all fields.";
     return;
   }
 
   try {
-    // Final check to prevent duplicate booking
-    const userBookingsRes = await fetch(`${BASE_URL}/bookings/${email}`);
-    const bookings = await userBookingsRes.json();
-
-    if (bookings.some(b => b.date === date)) {
-      alert("You have already booked a seat on this day.");
-      return;
-    }
-
-    const res = await fetch(`${BASE_URL}/book`, {
+    const res = await fetch("https://booking-system-yeb8.onrender.com/book", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ name, email, date, room })
+      body: JSON.stringify({ name, email, date: selectedDate, room })
     });
 
     if (res.ok) {
-      alert("Booking successful! Check your email.");
+      messageDiv.style.color = "green";
+      messageDiv.textContent = "Booking successful! Confirmation email sent.";
+      updateSeats();
+      loadAvailableRooms(selectedDate);
       form.reset();
-      messageDiv.textContent = "";
-      updateSeatsAndCheck(); // Refresh seat count
+      dateInput.min = today.toISOString().split("T")[0];
     } else {
-      const error = await res.text();
-      alert(`Error: ${error}`);
+      const errorText = await res.text();
+      messageDiv.style.color = "red";
+      messageDiv.textContent = "Error: " + errorText;
     }
   } catch (error) {
-    console.error("Booking error:", error);
-    alert("Network error. Please try again later.");
+    messageDiv.style.color = "red";
+    messageDiv.textContent = "Network error: " + error.message;
+  } finally {
+    // Hide loading overlay once the message updates
+    document.getElementById("loadingOverlay").style.display = "none";
   }
 });
 
