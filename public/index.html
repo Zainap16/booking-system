@@ -5,11 +5,15 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Office Booking</title>
   <link rel="stylesheet" href="style.css" />
+  <link rel="icon" type="image/png" href="./images/CoE-Logo.jpg">
+
 
 </head>
 <body>
-   <div class="overlay-container">
+  
   <div class="container">
+    <button id="toggleTheme">Toggle Dark Mode</button>
+
     <h1>Book Your Office Day</h1>
 
     <!-- Responsive Image -->
@@ -43,9 +47,21 @@
     <p id="message" style="color:red;"></p>
     
 
-  </div>
+
 </div>
 <script>
+   const toggleBtn = document.getElementById("toggleTheme");
+
+  // Load saved theme
+  if (localStorage.getItem("theme") === "dark") {
+    document.body.classList.add("dark-mode");
+  }
+
+  toggleBtn.addEventListener("click", () => {
+    document.body.classList.toggle("dark-mode");
+    const isDark = document.body.classList.contains("dark-mode");
+    localStorage.setItem("theme", isDark ? "dark" : "light");
+  });
   const form = document.getElementById("bookingForm");
   const dateInput = document.getElementById("date");
   const seatsText = document.getElementById("seatsLeft");
