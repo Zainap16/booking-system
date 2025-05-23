@@ -182,27 +182,23 @@ app.delete("/cancel", async (req, res) => {
       room: room.toUpperCase()
     });
 
-    if (!result) {
-      return res.status(404).send("Booking not found");
-    }
-
-    //new code below
-     // ✅ Send cancellation email (styled like booking confirmation)
-    const mailOptions = {
+     const mailOptions = {
       from: process.env.EMAIL_USER,
       to: email,
       subject: "Booking Cancelled",
-      text: `Hello ${name},\n\nYour seat (${room.toUpperCase()}) booking for ${date} has been successfully cancelled.\n\nBest regards,\nOffice Admin`
+      text: `Hello ${name},\n\nYour seat (${room}) has been booked for ${date}.\n\nBest regards,\nOffice Admin`
     };
 
-     transporter.sendMail(mailOptions, (error, info) => {
-      if (error) {
-        console.error("Error sending cancellation email:", error);
-        // Continue without failing the whole response
+    transporter.sendMail(mailOptions, (err, info) => {
+      if (err) {
+        console.error("Email failed", err);
       } else {
-        console.log("Cancellation email sent:", info.response);
+        console.log("Email sent", info.response);
       }
     });
+    if (!result) {
+      return res.status(404).send("Booking not found");
+    }
 
     res.status(200).send("Booking cancelled successfully");
   } catch (error) {
