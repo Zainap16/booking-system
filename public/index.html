@@ -132,44 +132,67 @@ dateInput.value = tomorrowStr;  // <-- Set default date to tomorrow
     }
   });
 
-  form.addEventListener("submit", async (e) => {
-    e.preventDefault();
+ let pendingFormSubmission = null;
 
-    const name = document.getElementById("name").value.trim();
-    const email = document.getElementById("email").value.trim();
-    const selectedDate = dateInput.value;
-    const room = dropdown.value.trim();
+form.addEventListener("submit", (e) => {
+  e.preventDefault();
 
-    if (!selectedDate || !name || !email || !room) {
+  // Store submission details for later
+  pendingFormSubmission = {
+    name: document.getElementById("name").value.trim(),
+    email: document.getElementById("email").value.trim(),
+    date: dateInput.value,
+    room: dropdown.value.trim(),
+  };
+
+  // Show modal
+  document.getElementById("confirmationModal").style.display = "flex";
+});
+
+document.getElementById("confirmYes").addEventListener("click", async () => {
+  const modal = document.getElementById("confirmationModal");
+  modal.style.display = "none";
+
+  const { name, email, date, room } = pendingFormSubmission;
+
+  if (!date || !name || !email || !room) {
+    messageDiv.style.color = "red";
+    messageDiv.textContent = "Please fill in all fields.";
+    return;
+  }
+
+  try {
+    const res = await fetch("https://booking-system-yeb8.onrender.com/book", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ name, email, date, room })
+    });
+
+    if (res.ok) {
+      messageDiv.style.color = "green";
+      messageDiv.textContent = "Booking successful! Confirmation email sent.";
+      updateSeats();
+      loadAvailableRooms(date);
+      form.reset();
+      dateInput.value = tomorrowStr;
+    } else {
+      const errorText = await res.text();
       messageDiv.style.color = "red";
-      messageDiv.textContent = "Please fill in all fields.";
-      return;
+      messageDiv.textContent = "Error: " + errorText;
     }
+  } catch (error) {
+    messageDiv.style.color = "red";
+    messageDiv.textContent = "Network error: " + error.message;
+  }
 
-    try {
-      const res = await fetch("https://booking-system-yeb8.onrender.com/book", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name, email, date: selectedDate, room })
-      });
+  pendingFormSubmission = null;
+});
 
-      if (res.ok) {
-        messageDiv.style.color = "green";
-        messageDiv.textContent = "Booking successful! Confirmation email sent.";
-        updateSeats();
-        loadAvailableRooms(selectedDate);
-        form.reset();
-        dateInput.min = today.toISOString().split("T")[0];
-      } else {
-        const errorText = await res.text();
-        messageDiv.style.color = "red";
-        messageDiv.textContent = "Error: " + errorText;
-      }
-    } catch (error) {
-      messageDiv.style.color = "red";
-      messageDiv.textContent = "Network error: " + error.message;
-    }
-  });
+document.getElementById("confirmNo").addEventListener("click", () => {
+  document.getElementById("confirmationModal").style.display = "none";
+  pendingFormSubmission = null;
+});
+
 
   document.getElementById("viewImageBtn").addEventListener("click", () => {
   document.getElementById("fullscreenOverlay").style.display = "flex";
@@ -204,6 +227,14 @@ toggleBtn.addEventListener("click", () => {
 
 
 </script>
+<!-- new cust9om popup code -->
+<div id="confirmationModal" class="modal" style="display: none;">
+  <div class="modal-content">
+    <p>Are you sure you want to submit this booking?</p>
+    <button id="confirmYes">Yes</button>
+    <button id="confirmNo">No</button>
+  </div>
+</div>
 
 </body>
 </html>
