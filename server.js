@@ -141,7 +141,7 @@ app.get("/available-rooms/:date", async (req, res) => {
   }
 });
 
-// ✅ Cancel booking endpoint
+/// ✅ Cancel booking endpoint
 app.delete("/cancel", async (req, res) => {
   const { email, date, room } = req.body;
 
@@ -182,23 +182,25 @@ app.delete("/cancel", async (req, res) => {
       room: room.toUpperCase()
     });
 
-     const mailOptions = {
+    if (!result) {
+      return res.status(404).send("Booking not found");
+    }
+
+    // ✅ Send cancellation email
+    const mailOptions = {
       from: process.env.EMAIL_USER,
       to: email,
       subject: "Booking Cancelled",
-      text: `Hello ${name},\n\nYour seat (${room}) has been booked for ${date}.\n\nBest regards,\nOffice Admin`
+      text: `Hello,\n\nYour booking for seat ${room.toUpperCase()} on ${date} has been successfully cancelled.\n\nBest regards,\nOffice Admin`
     };
 
     transporter.sendMail(mailOptions, (err, info) => {
       if (err) {
-        console.error("Email failed", err);
+        console.error("Cancellation email failed:", err);
       } else {
-        console.log("Email sent", info.response);
+        console.log("Cancellation email sent:", info.response);
       }
     });
-    if (!result) {
-      return res.status(404).send("Booking not found");
-    }
 
     res.status(200).send("Booking cancelled successfully");
   } catch (error) {
@@ -206,6 +208,7 @@ app.delete("/cancel", async (req, res) => {
     res.status(500).send("Internal server error");
   }
 });
+
 
 // ✅ Get booked rooms for user & date
 app.get("/booked-rooms", async (req, res) => {
