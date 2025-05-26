@@ -1,5 +1,5 @@
-// const BASE_URL = "https://booking-system-yeb8.onrender.com";
-const BASE_URL = "http://localhost:3000";
+const BASE_URL = "https://booking-system-yeb8.onrender.com";
+// const BASE_URL = "http://localhost:3000"; - changed
 
 const form = document.getElementById("bookingForm");
 const dateInput = document.getElementById("date");
@@ -57,7 +57,9 @@ form.addEventListener("submit", async (e) => {
   const name = document.getElementById("name").value.trim();
   const email = document.getElementById("email").value.trim();
   const selectedDate = dateInput.value;
-  const room = dropdown.value.trim();
+  // const room = dropdown.value.trim(); - changed
+  const room = document.getElementById("room").value.trim();
+
 
   if (!selectedDate || !name || !email || !room) {
     document.getElementById("loadingOverlay").style.display = "none"; // Hide loading
@@ -80,6 +82,9 @@ form.addEventListener("submit", async (e) => {
       loadAvailableRooms(selectedDate);
       form.reset();
       dateInput.min = today.toISOString().split("T")[0];
+//       const today = new Date();
+// dateInput.min = today.toISOString().split("T")[0];
+
     } else {
       const errorText = await res.text();
       messageDiv.style.color = "red";

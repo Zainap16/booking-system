@@ -10,6 +10,13 @@ require("dotenv").config();
 
 const Booking = require("./models/Booking");
 
+// ✅ Allowed email list (case-insensitive, stored in lowercase)
+const ALLOWED_EMAILS = [
+  "matthew.cupido@ardaghgroup.com",
+  "zainap.van-blerck@ardaghgroup.com"
+];
+
+
 // ✅ MongoDB connection
 mongoose.connect(process.env.MONGO_URI)
   .then(() => console.log("✅ Connected to MongoDB"))
@@ -40,12 +47,23 @@ const transporter = nodemailer.createTransport({
 
 // ✅ Booking endpoint
 app.post("/book", async (req, res) => {
-  const { email, name, date, room } = req.body;
+   let { email, name, date, room } = req.body;
 
-  if (!email.toLowerCase().endsWith("@ardaghgroup.com")) {
-    return res.status(400).send("Only ardaghgroup email addresses are allowed.");
+  if (!email || !name || !date || !room) {
+    return res.status(400).send("Missing required fields.");
   }
 
+  // ✅ Normalize email to lowercase for comparison
+  email = email.trim().toLowerCase();
+
+  // ✅ Reject if email is not in the approved list
+  if (!ALLOWED_EMAILS.includes(email)) {
+    return res.status(403).send("Your email is not authorized to make a booking.");
+  }
+
+  // if (!email.endsWith("@ardaghgroup.com")) {
+  //   return res.status(400).send("Only ardaghgroup email addresses are allowed.");
+  // }
   const bookingDate = new Date(date);
   const today = new Date();
   today.setHours(0, 0, 0, 0);
