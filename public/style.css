@@ -243,3 +243,18 @@ button:disabled {
   background-color: var(--button-disabled);
 }
 
+.fullscreen-figure {
+  text-align: center;
+  color: white;
+}
+
+.fullscreen-caption {
+  margin-top: 12px;
+  font-size: 2rem;
+  color: #f0f0f0;
+}
+
+.yellow{
+  color: yellow;
+  font-weight: bold;
+}

@@ -17,11 +17,19 @@
 
     <button id="viewImageBtn" type="button">View Fullscreen Map</button>
 
-    <div id="fullscreenOverlay" class="fullscreen-overlay" role="dialog" aria-modal="true" style="display:none;">
+    <!-- <div id="fullscreenOverlay" class="fullscreen-overlay" role="dialog" aria-modal="true" style="display:none;">
       <span id="closeBtn">&times;</span>
      
       <img src="./images/highlight-updated-floor-plan.png" alt="Full Map" class="fullscreen-image" />
-    </div>
+    </div> -->
+<div id="fullscreenOverlay" class="fullscreen-overlay" role="dialog" aria-modal="true" style="display:none;">
+  <span id="closeBtn">&times;</span>
+  
+  <figure class="fullscreen-figure">
+    <img src="./images/highlight-updated-floor-plan.png" alt="Full Map" class="fullscreen-image" />
+    <figcaption class="fullscreen-caption">Hotdesk highlighted in <span class="yellow" >yellow</span></figcaption>
+  </figure>
+</div>
 
     <form id="bookingForm">
       <input type="text" id="name" name="name" placeholder="Your Name" required />
