@@ -7,14 +7,16 @@ const cors = require("cors");
 const nodemailer = require("nodemailer");
 const mongoose = require("mongoose");
 require("dotenv").config();
+email = email.trim().toLowerCase();
 
 const Booking = require("./models/Booking");
 
 // ✅ Allowed email list (case-insensitive, stored in lowercase)
-const ALLOWED_EMAILS = [
-  "matthew.cupido@ardaghgroup.com",
-  "zainap.van-blerck@ardaghgroup.com"
-];
+// const ALLOWED_EMAILS = [
+//   "matthew.cupido@ardaghgroup.com",
+//   "zainap.van-blerck@ardaghgroup.com"
+// ];
+
 
 
 // ✅ MongoDB connection
@@ -47,19 +49,25 @@ const transporter = nodemailer.createTransport({
 
 // ✅ Booking endpoint
 app.post("/book", async (req, res) => {
+    // ✅ Normalize email to lowercase for comparison
+  email = email.trim().toLowerCase();
    let { email, name, date, room } = req.body;
 
   if (!email || !name || !date || !room) {
     return res.status(400).send("Missing required fields.");
   }
 
-  // ✅ Normalize email to lowercase for comparison
-  email = email.trim().toLowerCase();
+
 
   // ✅ Reject if email is not in the approved list
-  if (!ALLOWED_EMAILS.includes(email)) {
-    return res.status(403).send("Your email is not authorized to make a booking.");
-  }
+  // if (!ALLOWED_EMAILS.includes(email)) {
+  //   return res.status(403).send("Your email is not authorized to make a booking.");
+  // }
+  // ✅ Reject if email is not from @ardaghgroup.com
+if (!email.endsWith("@ardaghgroup.com")) {
+  return res.status(403).send("Only @ardaghgroup.com email addresses are allowed to make a booking.");
+}
+
 
   // if (!email.endsWith("@ardaghgroup.com")) {
   //   return res.status(400).send("Only ardaghgroup email addresses are allowed.");
@@ -197,7 +205,7 @@ app.delete("/cancel", async (req, res) => {
     const result = await Booking.findOneAndDelete({
       email: email.toLowerCase(),
       date,
-      room: room.toUpperCase()
+      room: room.toLowerCase()
     });
 
     if (!result) {
