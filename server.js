@@ -184,9 +184,9 @@ app.delete("/cancel", async (req, res) => {
 
     if (bookingDate.getTime() === tomorrow.getTime()) {
       const noonToday = new Date(today);
-      noonToday.setHours(18, 0, 0, 0);
+      noonToday.setHours(22, 0, 0, 0);
       if (now >= noonToday) {
-        return res.status(400).send("Cancellation not allowed after 6 PM the day before the booking.");
+        return res.status(400).send("Cancellation not allowed after 10 PM the day before the booking.");
       }
     }
 
