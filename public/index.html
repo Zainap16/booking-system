@@ -142,46 +142,54 @@
   });
 
   form.addEventListener("submit", async (e) => {
-    e.preventDefault();
+  e.preventDefault();
 
-    const name = document.getElementById("name").value.trim();
-    const email = document.getElementById("email").value.trim();
-    const selectedDate = dateInput.value;
-    const room = dropdown.value.trim();
+  const name = document.getElementById("name").value.trim();
+  const email = document.getElementById("email").value.trim();
+  const selectedDate = dateInput.value;
+  const room = dropdown.value.trim();
 
-    if (!selectedDate || !name || !email || !room) {
+  if (!selectedDate || !name || !email || !room) {
+    messageDiv.style.color = "red";
+    messageDiv.textContent = "Please fill in all fields.";
+    return;
+  }
+
+  // Email domain restriction
+  if (!email.endsWith("@ardagroup.com")) {
+    messageDiv.style.color = "red";
+    messageDiv.textContent = "Booking is only allowed with a @ardagroup.com email.";
+    return;
+  }
+
+  try {
+    const res = await fetch("https://booking-system-yeb8.onrender.com/book", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ name, email, date: selectedDate, room })
+    });
+
+    if (res.ok) {
+      messageDiv.style.color = "green";
+      messageDiv.textContent = "Booking successful! Confirmation email sent.";
+      updateSeats();
+      loadAvailableRooms(selectedDate);
+      form.reset();
+
+      // Reapply date constraints
+      dateInput.min = tomorrowStr;
+      dateInput.value = tomorrowStr;
+    } else {
+      const errorText = await res.text();
       messageDiv.style.color = "red";
-      messageDiv.textContent = "Please fill in all fields.";
-      return;
+      messageDiv.textContent = "Error: " + errorText;
     }
+  } catch (error) {
+    messageDiv.style.color = "red";
+    messageDiv.textContent = "Network error: " + error.message;
+  }
+});
 
-    try {
-      const res = await fetch("https://booking-system-yeb8.onrender.com/book", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name, email, date: selectedDate, room })
-      });
-
-      if (res.ok) {
-        messageDiv.style.color = "green";
-        messageDiv.textContent = "Booking successful! Confirmation email sent.";
-        updateSeats();
-        loadAvailableRooms(selectedDate);
-        form.reset();
-
-        // Reapply date constraints
-        dateInput.min = tomorrowStr;
-        dateInput.value = tomorrowStr;
-      } else {
-        const errorText = await res.text();
-        messageDiv.style.color = "red";
-        messageDiv.textContent = "Error: " + errorText;
-      }
-    } catch (error) {
-      messageDiv.style.color = "red";
-      messageDiv.textContent = "Network error: " + error.message;
-    }
-  });
 
   document.getElementById("viewImageBtn").addEventListener("click", () => {
     document.getElementById("fullscreenOverlay").style.display = "flex";

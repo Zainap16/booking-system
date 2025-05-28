@@ -115,6 +115,13 @@ cancelForm.addEventListener("submit", async (e) => {
     return;
   }
 
+  // Email domain restriction
+  if (!email.endsWith("@ardagroup.com")) {
+    cancelMessage.style.color = "red";
+    cancelMessage.textContent = "Cancellation is only allowed with a @ardagroup.com email.";
+    return;
+  }
+
   const confirmCancel = confirm(`Cancel booking for ${room} on ${date}?`);
   if (!confirmCancel) return;
 
@@ -138,6 +145,7 @@ cancelForm.addEventListener("submit", async (e) => {
     cancelMessage.textContent = "Network error: " + error.message;
   }
 });
+
 
 //dark mode script
 const toggleBtn = document.getElementById("toggleTheme");
