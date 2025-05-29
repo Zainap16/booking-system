@@ -61,7 +61,7 @@ setMinDateForCancel();
 // Function to fetch booked rooms for email + date
 async function fetchBookedRooms(email, date) {
   if (!email || !date) {
-    cancelRoom.innerHTML = '<option value="">Select your booked room</option>';
+    cancelRoom.innerHTML = '<option value="">Select your booked seat</option>';
     return;
   }
 

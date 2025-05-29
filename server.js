@@ -76,7 +76,7 @@ if (!email.endsWith("@ardaghgroup.com")) {
   try {
     const existingBooking = await Booking.findOne({ date, room });
     if (existingBooking) {
-      return res.status(400).send(`Room ${room} is already booked for ${date}.`);
+      return res.status(400).send(`Seat ${room} is already booked for ${date}. refresh the webpage.`);
     }
 
     const userHasBookingOnDate = await Booking.findOne({ email, date });
@@ -127,7 +127,8 @@ if (!email.endsWith("@ardaghgroup.com")) {
     res.status(200).send("Booking successful.");
   } catch (error) {
     console.error("Error during booking:", error);
-    res.status(500).send("Internal server error.");
+    //ic hanged this from interal server error
+    res.status(500).send("This seat has already been booked. Refresh this page. error.");
   }
 });
 
@@ -154,7 +155,7 @@ app.get("/available-rooms/:date", async (req, res) => {
 
     res.json({ availableRooms });
   } catch (error) {
-    console.error("Error fetching available rooms:", error);
+    console.error("Error fetching available seats:", error);
     res.status(500).send("Internal server error");
   }
 });
@@ -164,7 +165,7 @@ app.delete("/cancel", async (req, res) => {
   const { email, date, room } = req.body;
 
   if (!email || !date || !room) {
-    return res.status(400).send("Missing email, date, or room");
+    return res.status(400).send("Missing email, date, or seat");
   }
 
   try {
@@ -241,7 +242,7 @@ app.get("/booked-rooms", async (req, res) => {
     const bookedRooms = bookings.map(b => b.room);
     res.json({ bookedRooms });
   } catch (err) {
-    console.error("Error fetching booked rooms:", err);
+    console.error("Error fetching booked seats:", err);
     res.status(500).send("Internal server error");
   }
 });
