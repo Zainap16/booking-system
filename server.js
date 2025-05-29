@@ -68,6 +68,12 @@ if (!email.endsWith("@ardaghgroup.com")) {
   const today = new Date();
   today.setHours(0, 0, 0, 0);
   bookingDate.setHours(0, 0, 0, 0);
+  
+  // ❌ Reject if booking is for weekend
+  const dayOfWeek = bookingDate.getDay();
+  if (dayOfWeek === 0 || dayOfWeek === 6) {
+    return res.status(400).send("Bookings are not allowed on weekends.");
+  }
 
   if (bookingDate <= today) {
     return res.status(400).send("You can only book a day in advance.");
