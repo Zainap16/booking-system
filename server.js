@@ -76,7 +76,7 @@ if (!email.endsWith("@ardaghgroup.com")) {
   try {
     const existingBooking = await Booking.findOne({ date, room });
     if (existingBooking) {
-      return res.status(400).send(`Seat ${room} is already booked for ${date}. refresh the webpage.`);
+      return res.status(400).send(`Seat ${room} is already booked for ${date}. Refresh the webpage.`);
     }
 
     const userHasBookingOnDate = await Booking.findOne({ email, date });
