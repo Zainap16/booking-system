@@ -75,10 +75,10 @@ if (!email.endsWith("@ardaghgroup.com")) {
   if (dayOfWeek === 0 || dayOfWeek === 6) {
     return res.status(400).send("Bookings are not allowed on weekends.");
   }
-
-  if (bookingDate <= today) {
-    return res.status(400).send("You can only book a day in advance.");
-  }
+// COMMENT
+  // if (bookingDate <= today) {
+  //   return res.status(400).send("You can only book a day in advance.");
+  // }
 
   try {
     const existingBooking = await Booking.findOne({ date, room });
@@ -197,7 +197,7 @@ app.delete("/cancel", async (req, res) => {
         return res.status(400).send("Cancellation not allowed after 10 PM the day before the booking.");
       }
     }
-
+// maybe i should comment out this code
     if (bookingDate < today) {
       return res.status(400).send("Cannot cancel a booking in the past.");
     }
