@@ -28,10 +28,11 @@ app.use(bodyParser.json());
 app.use(express.static("public"));
 
 // ✅ Constants
-const MAX_SEATS = 42;
+// 42
+const MAX_SEATS = 40;
 const ROOMS = [
   "F52", "F53", "F54", "F55", "F56", "F57", "F58", "F59", "F60", "F61", "F62", "F63",
-  "G64", "G65", "G66", "G67", "G68", "G69", "G70", "G71", "G72", "G73", "G74", "G75", "G76", "G77", "G78",
+  "G64", "G65", "G66", "G67", "G68", "G69", "G70", "G71", "G72", "G73", "G76", "G77", "G78",
   "H79", "H80", "H81", "H82", "H83", "H84", "H85","H86", "H87", "H88", "H89", "H90", "H91", "H92", "H93"
 ];
 
@@ -107,8 +108,8 @@ if (!email.endsWith("@ardaghgroup.com")) {
         $lte: end.toISOString().split("T")[0]
       }
     });
-
-    if (userWeekBookings.length >= 3) {
+//change this to 2 -- only 2 daps per week now
+    if (userWeekBookings.length >= 2) {
       return res.status(400).send("You have already booked 3 days this week.");
     }
 

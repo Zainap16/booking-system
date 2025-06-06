@@ -11,7 +11,7 @@ async function updateSeatsAndCheck() {
   const email = document.getElementById("email").value.trim();
 
   if (!date) {
-    seatsText.innerText = "Seats left: 42";
+    seatsText.innerText = "Seats left: 40";
     messageDiv.textContent = "";
     return;
   }
