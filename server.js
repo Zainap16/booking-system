@@ -110,7 +110,7 @@ if (!email.endsWith("@ardaghgroup.com")) {
     });
 //change this to 2 -- only 2 daps per week now
     if (userWeekBookings.length >= 2) {
-      return res.status(400).send("You have already booked 3 days this week.");
+      return res.status(400).send("You have already booked 2 days this week.");
     }
 
     const newBooking = new Booking({ email: email.toLowerCase(), name, date, room });
