@@ -13,20 +13,20 @@
   <div class="container">
     <button id="toggleTheme" style="position:absolute; top:10px; right:10px;">🌙 Dark Mode</button>
 
-    <!-- <h1>Book Your Office Day</h1> -->
-    <h1 style="color: red;">Website Unavailable</h1>
+    <h1>Book Your Office Day</h1> 
+    <!-- <h1 style="color: red;">Website Unavailable</h1> -->
 
  
-<!-- <div id="fullscreenOverlay" class="fullscreen-overlay" role="dialog" aria-modal="true" style="display:none;">
+ <div id="fullscreenOverlay" class="fullscreen-overlay" role="dialog" aria-modal="true" style="display:none;">
   <span id="closeBtn">&times;</span>
   
   <figure class="fullscreen-figure">
     <img src="./images/highlight-updated-floor-plan.png" alt="Full Map" class="fullscreen-image" />
     <figcaption class="fullscreen-caption">Hotdesk highlighted in <span class="yellow" >yellow</span></figcaption>
   </figure>
-</div> -->
+</div> 
 
-    <!-- <form id="bookingForm">
+    <form id="bookingForm">
       <input type="text" id="name" name="name" placeholder="Your Name" required />
       <input type="email" id="email" name="email" placeholder="Your Email" required />
       <input type="date" placeholder="Select a date" id="date" name="date" required />
@@ -38,26 +38,25 @@
 
       <br>
       <button type="submit">Book</button>
-      <button onclick="window.location.href='cancel.html'">Cancel Booking</button> -->
+      <button onclick="window.location.href='cancel.html'">Cancel Booking</button> 
    
 
-    <!-- </form>
+    </form>
 
     <p id="seatsLeft">Seats left: 40</p>
     <p id="message" style="color:red;"></p>
   </div>
-</div> -->
+</div> 
 
-<!-- <script>
+<script>
   const form = document.getElementById("bookingForm");
   const dateInput = document.getElementById("date");
   const seatsText = document.getElementById("seatsLeft");
   const messageDiv = document.getElementById("message");
-  const dropdown = document.getElementById("room"); -->
-
-  <!-- // Set tomorrow as default, skip weekends -- exclude this and -->
+  const dropdown = document.getElementById("room"); 
+  // Set tomorrow as default, skip weekends -- exclude this and -->
   
-  <!-- const today = new Date();
+   const today = new Date();
   today.setDate(today.getDate() + 1);
 
   while (today.getDay() === 0 || today.getDay() === 6) {
@@ -85,9 +84,9 @@
     } catch {
       seatsText.textContent = "Seats left: Error";
     }
-  } -->
+  } 
 
-  <!-- async function loadAvailableRooms(date) {
+   async function loadAvailableRooms(date) {
     try {
       const response = await fetch(`https://booking-system-yeb8.onrender.com/available-rooms/${date}`);
       const data = await response.json();
@@ -149,10 +148,10 @@
     messageDiv.style.color = "red";
     messageDiv.textContent = "Please fill in all fields.";
     return;
-  } -->
-<!-- 
-  // Email domain restriction -->
-  <!-- if (!email.endsWith("@ardaghgroup.com")) {
+  } 
+
+  // Email domain restriction 
+   if (!email.endsWith("@ardaghgroup.com")) {
     messageDiv.style.color = "red";
     messageDiv.textContent = "Booking is only allowed with a @ardaghgroup.com email.";
     return;
@@ -184,10 +183,10 @@
     messageDiv.style.color = "red";
     messageDiv.textContent = "Network error: " + error.message;
   }
-}); -->
+});
 
 
-  <!-- document.getElementById("viewImageBtn").addEventListener("click", () => {
+  document.getElementById("viewImageBtn").addEventListener("click", () => {
     document.getElementById("fullscreenOverlay").style.display = "flex";
   });
 
@@ -216,7 +215,7 @@
     toggleBtn.textContent = isDarkMode ? "☀️ Light Mode" : "🌙 Dark Mode";
     localStorage.setItem("theme", isDarkMode ? "dark" : "light");
   });
-</script> -->
+</script>
 
 </body>
 </html>

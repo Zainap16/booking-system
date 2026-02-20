@@ -10,11 +10,7 @@ require("dotenv").config();
 
 const Booking = require("./models/Booking");
 
-// ✅ Allowed email list (case-insensitive, stored in lowercase)
-// const= [
-//   "matthew.cupido@ardaghgroup.com",
-//   "zainap.van-blerck@ardaghgroup.com"
-// ];
+
 
 
 // ✅ MongoDB connection
@@ -57,8 +53,8 @@ app.post("/book", async (req, res) => {
 email = email.trim().toLowerCase();
 
 // Only allow emails with domain '@ardaghgroup.com'
-if (!email.endsWith("@ardaghgroup.com")) {
-  return res.status(403).send("Only @ardaghgroup.com email addresses are allowed to make bookings.");
+if (!email.endsWith("@gmail.com")) {
+  return res.status(403).send("Only @gmail.com email addresses are allowed to make bookings.");
 }
 
 
